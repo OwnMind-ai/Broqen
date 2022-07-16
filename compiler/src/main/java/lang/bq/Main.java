@@ -20,6 +20,6 @@ public class Main {
         Tokenizer t = new Tokenizer(new CharStream(code));
 
         while(!t.eof())
-            t.next();
+            System.out.println(t.next());
     }
 }
