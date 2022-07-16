@@ -7,5 +7,6 @@ public enum TokenType {
     KEYWORD,
     NUMBER,
     STRING,
-    BOOLEAN
+    BOOLEAN,
+    TYPE
 }

@@ -1,36 +1,42 @@
 package lang.bq.parser;
 
-public class CharStream implements IStream<Character>{
+public class CharStream{
     private final String text;
 
-    private int pos, col;
+    private int position, column;
     private int line = 1;
 
-    public CharStream(String input) {
-        this.text = input;
+    public CharStream(String text){
+        this.text = text;
     }
 
-    @Override
-    public Character next() {
-        char ch = this.text.charAt(this.pos++);
+    public char next() {
+        char ch = this.text.charAt(this.position++);
         if (ch == '\n') {
             this.line++;
-            this.col = 0;
+            this.column = 0;
         } else {
-            this.col++;
+            this.column++;
         }
 
         return ch;
     }
 
-    @Override
-    public Character peek() {
-        return this.text.charAt(this.pos);
+    public char peek() {
+        return this.text.charAt(this.position);
     }
 
-    @Override
+    public boolean isNext(String value){
+        for (int i = 0; i < value.length(); i++) {
+            if (this.text.length() <= position + i && this.text.charAt(this.position + i) != value.charAt(i))
+                return false;
+        }
+
+        return true;
+    }
+
     public boolean eof() {
-        return this.text.length() >= pos;
+        return this.text.length() <= this.position;
     }
 
     public int getLine() {
@@ -38,6 +44,6 @@ public class CharStream implements IStream<Character>{
     }
 
     public int getColumn() {
-        return col;
+        return column;
     }
 }
