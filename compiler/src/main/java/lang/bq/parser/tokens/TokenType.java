@@ -8,5 +8,17 @@ public enum TokenType {
     NUMBER,
     STRING,
     BOOLEAN,
-    TYPE
+    TYPE,
+
+    FUNCTION,
+    NODE,
+    METHOD,
+    IF,
+    FOR,
+    WHILE,
+
+    CALL,
+    EXPRESSION,
+    SCRIPT,
+    ASSIGN
 }

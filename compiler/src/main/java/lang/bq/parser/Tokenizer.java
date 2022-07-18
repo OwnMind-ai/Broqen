@@ -2,8 +2,8 @@ package lang.bq.parser;
 
 import lang.bq.exceptions.TokenizeException;
 import lang.bq.parser.tokens.IToken;
-import lang.bq.parser.tokens.NumberToken;
-import lang.bq.parser.tokens.StringToken;
+import lang.bq.parser.tokens.lowlevel.NumberToken;
+import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.parser.tokens.TokenType;
 
 import java.util.Arrays;

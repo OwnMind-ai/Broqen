@@ -1,6 +1,9 @@
-package lang.bq.parser.tokens;
+package lang.bq.parser.tokens.lowlevel;
 
-public class StringToken implements IToken{
+import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.TokenType;
+
+public class StringToken implements IToken {
     private final TokenType type;
     public final String value;
 
