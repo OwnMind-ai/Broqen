@@ -1,5 +1,5 @@
 package lang.bq.parser.tokens;
 
-public interface IToken {
+public interface Token {
     TokenType type();
 }

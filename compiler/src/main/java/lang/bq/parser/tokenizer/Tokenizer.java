@@ -1,7 +1,7 @@
-package lang.bq.parser;
+package lang.bq.parser.tokenizer;
 
 import lang.bq.messages.ExceptionMessage;
-import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
@@ -18,7 +18,7 @@ public class Tokenizer{
     private final static String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public final static List<String> mathOperators = Arrays.asList(
             "+", "-", "*", "/", "^", "**", "%", "=", "--", "++", ">", "<", "<<", ">>", "->", "<-",
-            "+=", "-=", "*=", "/=", ":=", "%=","!=", ">=", "==", "<=", "&&", "||");
+            "+=", "-=", "*=", "/=", "%=","!=", ">=", "==", "<=", "&&", "||");
     private static final short MAX_OPERATOR_LENGTH = 2;
 
     private final static List<String> keywords = Arrays.asList(
@@ -28,7 +28,7 @@ public class Tokenizer{
             "void","int", "char", "short", "float", "double", "long", "bool"
     );
     private final CharStream stream;
-    private IToken current;
+    private Token current;
 
     public Tokenizer(CharStream stream) {
         this.stream = stream;
@@ -85,7 +85,7 @@ public class Tokenizer{
             this.skipWhitespaces();
     }
 
-    private IToken readOperator() {
+    private Token readOperator() {
         for (int i = MAX_OPERATOR_LENGTH ; i > 0; i--) {
             String operator = this.stream.peek(i);
 
@@ -98,7 +98,7 @@ public class Tokenizer{
         return null;
     }
 
-    private IToken readIdentification() {
+    private Token readIdentification() {
         String name = this.readWhile(Tokenizer::isName);
 
         if(Tokenizer.keywords.contains(name))
@@ -109,7 +109,7 @@ public class Tokenizer{
             return new StringToken(TokenType.IDENTIFIER, name);
     }
 
-    private IToken readNumber() {  //TODO: reading negative numbers
+    private Token readNumber() {  //TODO: reading negative numbers
         String number = readWhile(x -> Tokenizer.isDigit(x) || x == '.');
         long dotsCount = number.chars().filter(ch -> ch == '.').count();
 
@@ -121,7 +121,7 @@ public class Tokenizer{
         return new NumberToken(Long.parseLong(number));
     }
 
-    private IToken readString() {
+    private Token readString() {
         StringBuilder text = new StringBuilder();
         char startChar = this.stream.next();
 
@@ -161,7 +161,7 @@ public class Tokenizer{
         return 0;
     }
 
-    public IToken findToken(){
+    private Token findToken(){
         if (this.stream.eof()) return null;
 
         char ch = this.stream.peek();
@@ -185,14 +185,14 @@ public class Tokenizer{
         return null;
     }
 
-    public IToken next() {
+    public Token next() {
         this.skip();
         this.current = findToken();
 
         return this.current;
     }
 
-    public IToken peek() {
+    public Token peek() {
         return current;
     }
 
