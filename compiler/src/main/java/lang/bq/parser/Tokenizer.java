@@ -1,10 +1,10 @@
 package lang.bq.parser;
 
-import lang.bq.exceptions.TokenizeException;
+import lang.bq.messages.ExceptionMessage;
 import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
-import lang.bq.parser.tokens.TokenType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +109,7 @@ public class Tokenizer{
             return new StringToken(TokenType.IDENTIFIER, name);
     }
 
-    private IToken readNumber() {
+    private IToken readNumber() {  //TODO: reading negative numbers
         String number = readWhile(x -> Tokenizer.isDigit(x) || x == '.');
         long dotsCount = number.chars().filter(ch -> ch == '.').count();
 
@@ -201,10 +201,11 @@ public class Tokenizer{
     }
 
     private void throwException(String message){
-        throw new TokenizeException(message,
+        new ExceptionMessage(message,
+                this.stream.currentLine(),
                 this.stream.getLine(),
                 this.stream.getColumn()
-        );
+        ).throwMessage();
     }
 
     private interface ReadingCondition {

@@ -59,6 +59,10 @@ public class CharStream{
         return this.text.length() <= this.position;
     }
 
+    public String currentLine(){
+        return this.text.split("\n")[this.line - 1];
+    }
+
     public int getLine() {
         return line;
     }
