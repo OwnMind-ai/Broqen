@@ -1,17 +1,17 @@
 package lang.bq.parser.tokens.highlevel;
 
-import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 
 import java.util.Arrays;
 
-public class CallToken implements IToken {
+public class CallToken implements Token {
     private static final TokenType type = TokenType.CALL;
 
     public final String name;
-    public final IToken[] arguments;
+    public final Token[] arguments;
 
-    public CallToken(String name, IToken[] arguments) {
+    public CallToken(String name, Token[] arguments) {
         this.name = name;
         this.arguments = arguments;
     }

@@ -1,6 +1,7 @@
 package lang.bq.parser.tokenizer;
 
 import lang.bq.messages.ExceptionMessage;
+import lang.bq.parser.CharStream;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
@@ -53,7 +54,7 @@ public class Tokenizer{
     }
 
     private void skipWhitespaces(){
-        while(!this.stream.eof() && whitespaces.indexOf(this.stream.peek()) > -1){
+        while(!this.stream.eof() && isWhitespace(this.stream.peek())){
             this.stream.next();
         }
     }
@@ -200,7 +201,7 @@ public class Tokenizer{
         return stream.eof();
     }
 
-    private void throwException(String message){
+    public void throwException(String message){
         new ExceptionMessage(message,
                 this.stream.currentLine(),
                 this.stream.getLine(),

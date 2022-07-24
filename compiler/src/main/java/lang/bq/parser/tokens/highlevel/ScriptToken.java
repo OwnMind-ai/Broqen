@@ -1,16 +1,16 @@
 package lang.bq.parser.tokens.highlevel;
 
-import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 
 import java.util.Arrays;
 
-public class ScriptToken implements IToken {
+public class ScriptToken implements Token {
     private static final TokenType type = TokenType.SCRIPT;
 
-    public final IToken[] instructions;
+    public final Token[] instructions;
 
-    public ScriptToken(IToken[] instructions) {
+    public ScriptToken(Token[] instructions) {
         this.instructions = instructions;
     }
 

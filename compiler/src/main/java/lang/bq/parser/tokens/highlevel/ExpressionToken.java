@@ -1,15 +1,15 @@
 package lang.bq.parser.tokens.highlevel;
 
-import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 
-public class ExpressionToken implements IToken {
+public class ExpressionToken implements Token {
     public final static TokenType type = TokenType.EXPRESSION;
-    public final IToken left;
-    public final IToken right;
+    public final Token left;
+    public final Token right;
     public final String operator;
 
-    public ExpressionToken(String operator, IToken left, IToken right) {
+    public ExpressionToken(String operator, Token left, Token right) {
         this.left = left;
         this.right = right;
         this.operator = operator;

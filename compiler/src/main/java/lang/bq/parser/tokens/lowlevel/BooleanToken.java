@@ -1,9 +1,9 @@
 package lang.bq.parser.tokens.lowlevel;
 
-import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 
-public class BooleanToken implements IToken {
+public class BooleanToken implements Token {
     private static final TokenType type = TokenType.BOOLEAN;
     public final boolean value;
 

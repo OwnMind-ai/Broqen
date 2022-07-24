@@ -2,40 +2,40 @@ package lang.bq.parser;
 
 import lang.bq.parser.modules.ParserModule;
 import lang.bq.parser.tokenizer.Tokenizer;
+import lang.bq.parser.tokens.Token;
+import lang.bq.parser.tokens.TokenType;
 
 public class Parser {
     private static final ParserModule[] modules = {
             /* ...modules... */
     };
     private final Tokenizer tokenizer;
+    private Context context = Context.GLOBAL;
 
     public Parser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
 
-    // TODO: move it to corresponding module
-    public static int getPrecedence(String operator) {
-        switch (operator){
-            case "=": case "+=": case "-=":
-            case "*=": case "/=": case "%=":
-                return 1;
-            case ">>": case "<<":
-                return 2;
-            case "||":
-                return 3;
-            case "&&":
-                return 4;
-            case "^":
-                return 5;
-            case "<": case ">": case "<=":
-            case ">=": case "==": case "!=":
-                return 7;
-            case "+": case "-":
-                return 10;
-            case "*": case "/": case "%":
-                return 20;
-            default:
-                return 0;
+    private Token parseToken(){
+        Token token = this.tokenizer.next();
+
+        for (ParserModule module : modules) {
+            if (module.isNext(token, context)) {
+                Token result = module.parse(this.tokenizer, this::parseToken);
+                if(module.nextContext() != null) this.context = module.nextContext();
+
+                return result;
+            }
         }
+
+        if(token.type() == TokenType.IDENTIFIER ||
+           token.type() == TokenType.NUMBER     ||
+           token.type() == TokenType.STRING
+        ) {
+            return token;
+        }
+
+        this.tokenizer.throwException("Invalid syntax");
+        return null;
     }
 }

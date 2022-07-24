@@ -1,9 +1,11 @@
 package lang.bq.parser.tokens.lowlevel;
 
-import lang.bq.parser.tokens.IToken;
+import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 
-public class StringToken implements IToken {
+import java.util.Objects;
+
+public class StringToken implements Token {
     private final TokenType type;
     public final String value;
 
@@ -23,5 +25,18 @@ public class StringToken implements IToken {
                 "type=" + type +
                 ", value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StringToken that = (StringToken) o;
+        return type == that.type && value.equals(that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, value);
     }
 }
