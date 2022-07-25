@@ -64,26 +64,28 @@ public class Tokenizer{
             if (this.stream.isNext("//")) {   // skip single-line comment
                 while (!this.stream.eof() && this.stream.next() != '\n');
 
-                this.stream.next(); // skip '\n'
+                if(!this.stream.eof()) this.stream.next(); // skip '\n'
+                return true;
             } else if(this.stream.isNext("/*")) {   /* skip multi-line comment */
                 while (!this.stream.eof()){
                     if(this.stream.isNext("*/"))
                         break;
+                    this.stream.next();
                 }
+
                 this.stream.next();  // skip '*'
                 this.stream.next();  // skip '/'
+                return true;
             }
-
-            return true;
         }
 
         return false;
     }
 
     private void skip(){
-        this.skipWhitespaces();
-        while(this.skipComments())
+        do {
             this.skipWhitespaces();
+        } while(this.skipComments());
     }
 
     private Token readOperator() {
@@ -188,14 +190,25 @@ public class Tokenizer{
 
     public Token next() {
         this.skip();
+        Token previous = this.current;
         this.current = findToken();
 
-        return this.current;
+        return previous;
     }
 
     public Token peek() {
         return current;
     }
+
+    public boolean skip(Token token){
+        if(this.current != null && this.current.equals(token)) {
+            this.next();
+            return true;
+        }
+
+        return false;
+    }
+
 
     public boolean eof() {
         return stream.eof();

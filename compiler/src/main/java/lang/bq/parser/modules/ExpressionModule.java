@@ -15,25 +15,29 @@ public class ExpressionModule implements ParserModule{
     @Override
     public boolean isNext(Token token, Context context) {
         return (context == Context.FUNCTION || context == Context.EXPRESSION)
-                && token.type() == TokenType.OPERATOR && ((StringToken) token).value.equals("(");
+                && token.type() == TokenType.PUNCTUATION && ((StringToken) token).value.equals("(");
     }
 
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
         this.accessor = accessor;
         this.tokenizer = tokenizer;
-        return this.buildTree(accessor.parse(), 0);
+
+        Token result = this.buildTree(accessor.parse(), 0);
+        tokenizer.skip(new StringToken(TokenType.PUNCTUATION, ")"));
+
+        return result;
     }
 
     private Token buildTree(Token previous, int priority){
         Token token = tokenizer.peek();
-        if(token != null && token.type() == TokenType.OPERATOR){
+        if(token != null && token.type() == TokenType.OPERATOR) {
             assert token instanceof StringToken;
             StringToken operator = (StringToken) token;
 
             int nextPriority = ExpressionModule.getPriority(operator.value);
-            if(priority < nextPriority){
-                this.tokenizer.next();
+            if (priority < nextPriority) {
+                tokenizer.next();
 
                 return this.buildTree(
                         new ExpressionToken(
@@ -46,10 +50,10 @@ public class ExpressionModule implements ParserModule{
             }
         }
 
-        return token;
+        return previous;
     }
 
-    public static int getPriority(String operator) {
+    private static int getPriority(String operator) {
         switch (operator){
             case "=": case "+=": case "-=":
             case "*=": case "/=": case "%=":

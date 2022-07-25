@@ -48,7 +48,7 @@ public class CharStream{
     }
     public boolean isNext(String value){
         for (int i = 0; i < value.length(); i++) {
-            if (this.text.length() <= position + i && this.text.charAt(this.position + i) != value.charAt(i))
+            if (this.text.length() <= position + i || this.text.charAt(this.position + i) != value.charAt(i))
                 return false;
         }
 
