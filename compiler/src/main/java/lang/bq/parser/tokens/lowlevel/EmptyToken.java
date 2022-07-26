@@ -8,4 +8,14 @@ public class EmptyToken implements Token {
     public TokenType type() {
         return TokenType.EMPTY;
     }
+
+    @Override
+    public String toString() {
+        return "EMPTY";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || this.getClass() == o.getClass();
+    }
 }

@@ -63,4 +63,8 @@ public enum Operators {
 
     public int priority(){ return this.priority; }
     public String representation(){ return this.representation; }
+
+    public boolean equals(String representation){
+        return this.representation.equals(representation);
+    }
 }
