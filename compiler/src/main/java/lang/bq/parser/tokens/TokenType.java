@@ -1,6 +1,7 @@
 package lang.bq.parser.tokens;
 
 public enum TokenType {
+    EMPTY,
     PUNCTUATION,
     OPERATOR,
     IDENTIFIER,

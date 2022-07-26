@@ -10,30 +10,31 @@ import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
 import org.junit.jupiter.api.Test;
 
+import static lang.bq.syntax.Operators.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExpressionModuleTest {
     private static final ExpressionToken answer = new ExpressionToken(
-            "+",
-            new NumberToken(1),
+            of("+"),
+            new NumberToken(0),
             new ExpressionToken(
-                    "*",
+                    of("*"),
                     new ExpressionToken(
-                            "+",
-                            new NumberToken(2),
-                            new ExpressionToken("-", new NumberToken(1), new NumberToken(3))
+                            of("+"),
+                            new NumberToken(1),
+                            new ExpressionToken(of("-"), new NumberToken(2), new NumberToken(3))
                     ),
-                    new ExpressionToken("-",
-                            new ExpressionToken("-", new NumberToken(1),
-                                    new ExpressionToken("/", new NumberToken(2), new NumberToken(3))
+                    new ExpressionToken(of("-"),
+                            new ExpressionToken(of("-"), new NumberToken(4),
+                                    new ExpressionToken(of("/"), new NumberToken(5), new NumberToken(6))
                             ),
-                            new NumberToken(1)
+                            new NumberToken(7)
                     )
             )
     );
 
-    private final Tokenizer tokenizer = new Tokenizer(new CharStream("1 + (2 + (1 - 3)) * (1 - 2 / 3 - 1)"));
+    private final Tokenizer tokenizer = new Tokenizer(new CharStream("0 + (1 + (2 - 3)) * (4 - 5 / 6 - 7)"));
     private final ExpressionModule module = new ExpressionModule();
 
     @Test

@@ -7,6 +7,7 @@ import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ExpressionToken;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
+import lang.bq.parser.tokens.lowlevel.OperatorToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
 
 public class SignModule implements ParserModule {
@@ -21,7 +22,7 @@ public class SignModule implements ParserModule {
 
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
-        StringToken operator = (StringToken) tokenizer.next();
+        OperatorToken operator = (OperatorToken) tokenizer.next();
         return new ExpressionToken(operator.value, new NumberToken(0), accessor.parse(Context.EXPRESSION));
     }
 

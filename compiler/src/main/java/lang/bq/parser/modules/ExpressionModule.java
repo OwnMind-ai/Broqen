@@ -6,6 +6,7 @@ import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ExpressionToken;
+import lang.bq.parser.tokens.lowlevel.OperatorToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
 
 public class ExpressionModule implements ParserModule{
@@ -23,27 +24,26 @@ public class ExpressionModule implements ParserModule{
         this.accessor = accessor;
         this.tokenizer = tokenizer;
 
-        Token result = this.buildTree(accessor.parse(Context.EXPRESSION), 0);
+        Token result = this.buildTree(accessor.parse(Context.EXPRESSION), Integer.MAX_VALUE);
         tokenizer.skip(new StringToken(TokenType.PUNCTUATION, ")"));
 
         return result;
     }
 
-    private Token buildTree(Token previous, int priority){
+    private Token buildTree(Token previous, int priority) {
         Token token = tokenizer.peek();
-        if(token != null && token.type() == TokenType.OPERATOR) {
-            assert token instanceof StringToken;
-            StringToken operator = (StringToken) token;
+        if (token != null && token.type() == TokenType.OPERATOR) {
+            assert token instanceof OperatorToken;
+            OperatorToken operator = (OperatorToken) token;
 
-            int nextPriority = ExpressionModule.getPriority(operator.value);
-            if (priority < nextPriority) {
+            if (priority > operator.value.priority()) {
                 tokenizer.next();
 
                 return this.buildTree(
                         new ExpressionToken(
                                 operator.value,
                                 previous,
-                                this.buildTree(accessor.parse(Context.EXPRESSION), nextPriority)
+                                this.buildTree(accessor.parse(Context.EXPRESSION), operator.value.priority())
                         ),
                         priority
                 );
@@ -51,31 +51,6 @@ public class ExpressionModule implements ParserModule{
         }
 
         return previous;
-    }
-
-    private static int getPriority(String operator) {
-        switch (operator){
-            case "=": case "+=": case "-=":
-            case "*=": case "/=": case "%=":
-                return 1;
-            case ">>": case "<<":
-                return 2;
-            case "||":
-                return 3;
-            case "&&":
-                return 4;
-            case "^":
-                return 5;
-            case "<": case ">": case "<=":
-            case ">=": case "==": case "!=":
-                return 7;
-            case "+": case "-":
-                return 10;
-            case "*": case "/": case "%":
-                return 20;
-            default:
-                return 0;
-        }
     }
 
     @Override

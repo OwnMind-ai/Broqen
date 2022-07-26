@@ -2,6 +2,8 @@ package lang.bq.parser.tokens.highlevel;
 
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
+import lang.bq.parser.tokens.lowlevel.OperatorToken;
+import lang.bq.syntax.Operators;
 
 import java.util.Objects;
 
@@ -9,9 +11,9 @@ public class ExpressionToken implements Token {
     public final static TokenType type = TokenType.EXPRESSION;
     public final Token left;
     public final Token right;
-    public final String operator;
+    public final Operators operator;
 
-    public ExpressionToken(String operator, Token left, Token right) {
+    public ExpressionToken(Operators operator, Token left, Token right) {
         this.left = left;
         this.right = right;
         this.operator = operator;
@@ -21,7 +23,7 @@ public class ExpressionToken implements Token {
     public String toString() {
         return "EXPRESSION: {" +
                 left.toString() + " " +
-                this.operator +
+                this.operator.representation() +
                 " " + this.right.toString() + "}";
     }
 

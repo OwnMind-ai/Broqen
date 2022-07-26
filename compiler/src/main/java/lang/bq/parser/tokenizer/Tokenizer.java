@@ -5,7 +5,9 @@ import lang.bq.parser.CharStream;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
+import lang.bq.parser.tokens.lowlevel.OperatorToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
+import lang.bq.syntax.Operators;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,6 @@ public class Tokenizer{
     public final static List<String> mathOperators = Arrays.asList(
             "+", "-", "*", "/", "^", "**", "%", "=", "--", "++", ">", "<", "<<", ">>", "->", "<-",
             "+=", "-=", "*=", "/=", "%=","!=", ">=", "==", "<=", "&&", "||");
-    private static final short MAX_OPERATOR_LENGTH = 2;
 
     private final static List<String> keywords = Arrays.asList(
             "true", "false", "new", "node", "send", "feedback", "public", "private"
@@ -89,11 +90,13 @@ public class Tokenizer{
     }
 
     private Token readOperator() {
-        for (int i = MAX_OPERATOR_LENGTH ; i > 0; i--) {
+        for (int i = Operators.MAX_OPERATOR_LENGTH; i > 0; i--) {
             String operator = this.stream.peek(i);
 
-            if (Tokenizer.mathOperators.contains(operator)) {
-                return new StringToken(TokenType.OPERATOR, this.stream.next(i));
+            Operators result = Operators.of(operator);
+            if (result != null) {
+                this.stream.next(i);
+                return new OperatorToken(result);
             }
         }
 
