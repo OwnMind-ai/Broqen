@@ -17,7 +17,7 @@ public class Parser {
         this.tokenizer.next();
     }
 
-    private Token parseToken(){
+    private Token parseToken(Context context){
         Token token = this.tokenizer.next();
 
         for (ParserModule module : modules) {

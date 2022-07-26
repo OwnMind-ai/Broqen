@@ -43,7 +43,7 @@ class ExpressionModuleTest {
         assertEquals(answer, module.parse(tokenizer, this::parseToken));
     }
 
-    private Token parseToken(){
+    private Token parseToken(Context context){
         if(tokenizer.peek() != null && tokenizer.peek().type() == TokenType.PUNCTUATION &&
                 ((StringToken) tokenizer.peek()).value.equals("(")){
             tokenizer.next();

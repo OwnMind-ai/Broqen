@@ -23,7 +23,7 @@ public class ExpressionModule implements ParserModule{
         this.accessor = accessor;
         this.tokenizer = tokenizer;
 
-        Token result = this.buildTree(accessor.parse(), 0);
+        Token result = this.buildTree(accessor.parse(Context.EXPRESSION), 0);
         tokenizer.skip(new StringToken(TokenType.PUNCTUATION, ")"));
 
         return result;
@@ -43,7 +43,7 @@ public class ExpressionModule implements ParserModule{
                         new ExpressionToken(
                                 operator.value,
                                 previous,
-                                this.buildTree(accessor.parse(), nextPriority)
+                                this.buildTree(accessor.parse(Context.EXPRESSION), nextPriority)
                         ),
                         priority
                 );

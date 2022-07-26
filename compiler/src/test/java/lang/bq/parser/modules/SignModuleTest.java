@@ -21,9 +21,9 @@ class SignModuleTest {
         bracket.next();
 
         assertEquals(new ExpressionToken("-", new NumberToken(0), new NumberToken(1)),
-                module.parse(number, number::next));
+                module.parse(number, c -> number.next()));
 
         assertEquals(new ExpressionToken("-", new NumberToken(0), new StringToken(TokenType.PUNCTUATION, "(")),
-                module.parse(bracket, bracket::next));
+                module.parse(bracket, c -> bracket.next()));
     }
 }

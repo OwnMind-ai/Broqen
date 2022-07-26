@@ -22,7 +22,7 @@ public class SignModule implements ParserModule {
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
         StringToken operator = (StringToken) tokenizer.next();
-        return new ExpressionToken(operator.value, new NumberToken(0), accessor.parse());
+        return new ExpressionToken(operator.value, new NumberToken(0), accessor.parse(Context.EXPRESSION));
     }
 
     @Override
