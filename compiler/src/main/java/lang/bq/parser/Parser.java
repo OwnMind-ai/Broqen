@@ -14,6 +14,7 @@ public class Parser {
 
     public Parser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
+        this.tokenizer.next();
     }
 
     private Token parseToken(){
