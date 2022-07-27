@@ -1,5 +1,6 @@
 package lang.bq.parser.tokens;
 
+// TODO: migrate token type identification to instanceof construction for better casting safety
 public enum TokenType {
     EMPTY,
     PUNCTUATION,

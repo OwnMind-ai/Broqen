@@ -1,13 +1,14 @@
 package lang.bq.parser.tokenizer;
 
 import lang.bq.messages.ExceptionMessage;
-import lang.bq.parser.CharStream;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.parser.tokens.lowlevel.OperatorToken;
+import lang.bq.parser.tokens.lowlevel.PunctuationToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.syntax.Operators;
+import lang.bq.syntax.Punctuations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,12 +17,7 @@ public class Tokenizer{
     private final static String whitespaces = " \n\t\r";
     private final static String digits = "0123456789";
     private final static String stringOperators = "\"'";
-    private final static String punctuation = ".,:;(){}[]";
-    private final static String operators = "+-*/%=&|<>!:";
     private final static String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public final static List<String> mathOperators = Arrays.asList(
-            "+", "-", "*", "/", "^", "**", "%", "=", "--", "++", ">", "<", "<<", ">>", "->", "<-",
-            "+=", "-=", "*=", "/=", "%=","!=", ">=", "==", "<=", "&&", "||");
 
     private final static List<String> keywords = Arrays.asList(
             "true", "false", "new", "node", "send", "feedback", "public", "private"
@@ -38,10 +34,10 @@ public class Tokenizer{
 
     private static boolean isDigit(char ch) { return Tokenizer.digits.indexOf(ch) > -1; }
     private static boolean isNameStart(char ch) { return Tokenizer.letters.indexOf(ch) > -1; }
-    private static boolean isOperator(char ch) { return Tokenizer.operators.indexOf(ch) > -1; }
+    private static boolean isOperator(char ch) { return Operators.chars.indexOf(ch) > -1; }
     private static boolean isWhitespace(char ch) { return Tokenizer.whitespaces.indexOf(ch) > -1; }
     private static boolean isString(char ch) { return Tokenizer.stringOperators.indexOf(ch) > -1; }
-    private static boolean isPunctuation(char ch) { return Tokenizer.punctuation.indexOf(ch) > -1; }
+    private static boolean isPunctuation(char ch) { return Punctuations.chars.indexOf(ch) > -1; }
     private static boolean isName(char ch) { return Tokenizer.isNameStart(ch) || (Tokenizer.digits + "_").indexOf(ch) > -1; }
 
     private String readWhile(ReadingCondition predicate) {
@@ -115,7 +111,7 @@ public class Tokenizer{
             return new StringToken(TokenType.IDENTIFIER, name);
     }
 
-    private Token readNumber() {  //TODO: reading negative numbers
+    private Token readNumber() {
         String number = readWhile(x -> Tokenizer.isDigit(x) || x == '.');
         long dotsCount = number.chars().filter(ch -> ch == '.').count();
 
@@ -173,7 +169,7 @@ public class Tokenizer{
         char ch = this.stream.peek();
 
         if (Tokenizer.isPunctuation(ch))
-            return new StringToken(TokenType.PUNCTUATION, String.valueOf(this.stream.next()));
+            return new PunctuationToken(Punctuations.of(String.valueOf(this.stream.next())));
 
         if (Tokenizer.isOperator(ch))
             return readOperator();
@@ -196,6 +192,10 @@ public class Tokenizer{
         Token previous = this.current;
         this.current = findToken();
 
+        // Dangerous code, may cause infinity loops while waiting null output from Tokenizer::next
+        // TODO: find another way to fix problem with taking next on eof (something with Tokenizer::findToken:1)
+        if(current == null) this.current = previous;
+
         return previous;
     }
 
@@ -203,7 +203,11 @@ public class Tokenizer{
         return current;
     }
 
-    public boolean skip(Token token){
+    public void skip(Token token){
+        if(!unsafeSkip(token)) this.throwException("Failed to find " + token);
+    }
+
+    public boolean unsafeSkip(Token token){
         if(this.current != null && this.current.equals(token)) {
             this.next();
             return true;
@@ -211,7 +215,6 @@ public class Tokenizer{
 
         return false;
     }
-
 
     public boolean eof() {
         return stream.eof();

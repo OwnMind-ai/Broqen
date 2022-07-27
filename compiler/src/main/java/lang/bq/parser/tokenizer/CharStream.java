@@ -1,4 +1,4 @@
-package lang.bq.parser;
+package lang.bq.parser.tokenizer;
 
 public class CharStream{
     private final String text;

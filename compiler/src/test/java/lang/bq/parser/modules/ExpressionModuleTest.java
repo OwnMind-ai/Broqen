@@ -1,13 +1,14 @@
 package lang.bq.parser.modules;
 
-import lang.bq.parser.CharStream;
 import lang.bq.parser.Context;
+import lang.bq.parser.tokenizer.CharStream;
 import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ExpressionToken;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
+import lang.bq.parser.tokens.lowlevel.PunctuationToken;
+import lang.bq.syntax.Punctuations;
 import org.junit.jupiter.api.Test;
 
 import static lang.bq.syntax.Operators.of;
@@ -39,14 +40,14 @@ class ExpressionModuleTest {
 
     @Test
     void parse() {
-        assertTrue(module.isNext(new StringToken(TokenType.PUNCTUATION,"("), Context.FUNCTION));
+        assertTrue(module.isNext(new PunctuationToken(Punctuations.PARENTHESES_START), Context.FUNCTION));
         tokenizer.next();
         assertEquals(answer, module.parse(tokenizer, this::parseToken));
     }
 
     private Token parseToken(Context context){
         if(tokenizer.peek() != null && tokenizer.peek().type() == TokenType.PUNCTUATION &&
-                ((StringToken) tokenizer.peek()).value.equals("(")){
+                ((PunctuationToken) tokenizer.peek()).value == Punctuations.PARENTHESES_START){
             tokenizer.next();
             return module.parse(tokenizer, this::parseToken);
         }

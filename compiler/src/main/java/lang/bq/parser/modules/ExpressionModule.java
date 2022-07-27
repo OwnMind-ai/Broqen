@@ -7,7 +7,8 @@ import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ExpressionToken;
 import lang.bq.parser.tokens.lowlevel.OperatorToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
+import lang.bq.parser.tokens.lowlevel.PunctuationToken;
+import lang.bq.syntax.Punctuations;
 
 public class ExpressionModule implements ParserModule{
     private ModuleAccessor accessor;
@@ -16,7 +17,8 @@ public class ExpressionModule implements ParserModule{
     @Override
     public boolean isNext(Token token, Context context) {
         return (context == Context.FUNCTION || context == Context.EXPRESSION)
-                && token.type() == TokenType.PUNCTUATION && ((StringToken) token).value.equals("(");
+                && token.type() == TokenType.PUNCTUATION &&
+                ((PunctuationToken) token).value == Punctuations.PARENTHESES_START;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class ExpressionModule implements ParserModule{
         this.tokenizer = tokenizer;
 
         Token result = this.buildTree(accessor.parse(Context.EXPRESSION), Integer.MAX_VALUE);
-        tokenizer.skip(new StringToken(TokenType.PUNCTUATION, ")"));
+        tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_END));
 
         return result;
     }

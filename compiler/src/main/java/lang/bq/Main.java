@@ -1,6 +1,6 @@
 package lang.bq;
 
-import lang.bq.parser.CharStream;
+import lang.bq.parser.tokenizer.CharStream;
 import lang.bq.parser.tokenizer.Tokenizer;
 
 import java.io.File;

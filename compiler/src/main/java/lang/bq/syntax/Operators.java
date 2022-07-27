@@ -42,6 +42,7 @@ public enum Operators {
     OR_ASSIGN("|=", 14);
 
     public static final short MAX_OPERATOR_LENGTH = 2;
+    public static final String chars = "+-*/%=&|<>!:";
 
     public static Operators of(String operator){
         if(operator.length() > MAX_OPERATOR_LENGTH) return null;
