@@ -10,9 +10,9 @@ public class ForkModule implements ParserModule{
     private final TokenType trigger;
     private Context context;
 
-    private final ParserModule[] modules;
+    private final ForkedModule[] modules;
 
-    public ForkModule(TokenType trigger, Context context, ParserModule... modules) {
+    public ForkModule(TokenType trigger, Context context, ForkedModule... modules) {
         this.trigger = trigger;
         this.context = context;
         this.modules = modules;
