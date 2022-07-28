@@ -10,7 +10,7 @@ public enum TokenType {
     NUMBER,
     STRING,
     BOOLEAN,
-    TYPE,
+    PRIMITIVE,
 
     FUNCTION,
     NODE,
@@ -22,5 +22,7 @@ public enum TokenType {
     CALL,
     EXPRESSION,
     SCRIPT,
-    ASSIGN
+    ASSIGN,
+    OBJECT_INITIALIZATION,
+    PRIMITIVE_INITIALIZATION
 }

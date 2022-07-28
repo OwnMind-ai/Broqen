@@ -3,11 +3,9 @@ package lang.bq.parser.tokenizer;
 import lang.bq.messages.ExceptionMessage;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
-import lang.bq.parser.tokens.lowlevel.NumberToken;
-import lang.bq.parser.tokens.lowlevel.OperatorToken;
-import lang.bq.parser.tokens.lowlevel.PunctuationToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
+import lang.bq.parser.tokens.lowlevel.*;
 import lang.bq.syntax.Operators;
+import lang.bq.syntax.Primitives;
 import lang.bq.syntax.Punctuations;
 
 import java.util.Arrays;
@@ -21,9 +19,6 @@ public class Tokenizer{
 
     private final static List<String> keywords = Arrays.asList(
             "true", "false", "new", "node", "send", "feedback", "public", "private"
-    );
-    private final static List<String> types = Arrays.asList(
-            "void","int", "char", "short", "float", "double", "long", "bool"
     );
     private final CharStream stream;
     private Token current;
@@ -105,10 +100,13 @@ public class Tokenizer{
 
         if(Tokenizer.keywords.contains(name))
             return new StringToken(TokenType.KEYWORD, name);
-        else if (Tokenizer.types.contains(name))
-            return new StringToken(TokenType.TYPE, name);
-        else
-            return new StringToken(TokenType.IDENTIFIER, name);
+        else {
+            Primitives primitive = Primitives.of(name);
+            if(primitive != null)
+                return new PrimitiveToken(primitive);
+            else
+                return new StringToken(TokenType.IDENTIFIER, name);
+        }
     }
 
     private Token readNumber() {

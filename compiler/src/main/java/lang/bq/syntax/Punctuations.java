@@ -20,9 +20,9 @@ public enum Punctuations {
 
     public static final String chars = ".,:;(){}[]";
 
-    public static Punctuations of(String operator){
+    public static Punctuations of(String punctuation){
         for(Punctuations punc : Punctuations.values())
-            if (punc.representation().equals(operator)) return punc;
+            if (punc.representation().equals(punctuation)) return punc;
 
         return null;
     }
