@@ -14,7 +14,7 @@ import lang.bq.syntax.Punctuations;
 public class CallModule implements ForkedModule, Delimiter {
     private String name;
     @Override
-    public boolean isNext(Token token, Context context) {
+    public boolean isNextForked(Token token, Context context) {
         return (context == Context.FUNCTION || context == Context.EXPRESSION)
                 && token.equals(new PunctuationToken(Punctuations.PARENTHESES_START));
     }
@@ -42,5 +42,10 @@ public class CallModule implements ForkedModule, Delimiter {
     public void setPrevious(Token token) {
         assert token.type() == TokenType.IDENTIFIER;
         this.name = ((StringToken) token).value;
+    }
+
+    @Override
+    public boolean isNext(Token token, Context context) {
+        return false;
     }
 }

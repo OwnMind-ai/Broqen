@@ -8,10 +8,12 @@ import java.util.Objects;
 
 public class PrimitiveInitializationToken implements Token {
     public final Primitives type;
+    public final String name;
     public final Token value;
 
-    public PrimitiveInitializationToken(Primitives type, Token value) {
+    public PrimitiveInitializationToken(Primitives type, String name, Token value) {
         this.type = type;
+        this.name = name;
         this.value = value;
     }
 

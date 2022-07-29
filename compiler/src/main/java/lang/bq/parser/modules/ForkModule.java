@@ -25,10 +25,11 @@ public class ForkModule implements ParserModule{
 
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
-        Token token = tokenizer.next();
+        Token previous = tokenizer.next();
 
-        for (ParserModule module : this.modules) {
-            if (module.isNext(token, context)) {
+        for (ForkedModule module : this.modules) {
+            if (module.isNextForked(tokenizer.peek(), context)) {
+                module.setPrevious(previous);
                 Token result = module.parse(tokenizer, accessor);
                 if(module.nextContext() != null) this.context = module.nextContext();
 

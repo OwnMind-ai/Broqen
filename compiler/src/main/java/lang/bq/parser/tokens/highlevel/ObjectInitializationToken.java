@@ -7,10 +7,12 @@ import java.util.Objects;
 
 public class ObjectInitializationToken implements Token {
     public final String type;
+    public final String name;
     public final Token value;
 
-    public ObjectInitializationToken(String type, Token value) {
+    public ObjectInitializationToken(String type, String name, Token value) {
         this.type = type;
+        this.name = name;
         this.value = value;
     }
 
@@ -29,7 +31,7 @@ public class ObjectInitializationToken implements Token {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObjectInitializationToken that = (ObjectInitializationToken) o;
-        return type == that.type && Objects.equals(value, that.value);
+        return Objects.equals(type, that.type) && Objects.equals(value, that.value);
     }
 
     @Override
