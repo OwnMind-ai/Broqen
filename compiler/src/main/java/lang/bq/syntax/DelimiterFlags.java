@@ -14,7 +14,12 @@ public enum DelimiterFlags {
             new PunctuationToken(Punctuations.CURLY_START),
             new PunctuationToken(Punctuations.SEMICOLON),
             new PunctuationToken(Punctuations.CURLY_END)
-    ),;
+    ),
+    FUNCTION_ARGS(
+            new PunctuationToken(Punctuations.PARENTHESES_START),
+            new PunctuationToken(Punctuations.COMMA),
+            new PunctuationToken(Punctuations.PARENTHESES_END)
+    );
     
     private final Delimiter.Flags flags;
     

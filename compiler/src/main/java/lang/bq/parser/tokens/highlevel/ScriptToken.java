@@ -25,4 +25,17 @@ public class ScriptToken implements Token {
                 "instructions=" + Arrays.toString(instructions) +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScriptToken that = (ScriptToken) o;
+        return Arrays.equals(instructions, that.instructions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(instructions);
+    }
 }

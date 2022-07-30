@@ -4,12 +4,13 @@ import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
 
 import java.util.LinkedList;
+import java.util.List;
 
-public interface Delimiter {
+public interface Delimiter <T extends Token> {
     Flags flags();
 
-    default Token[] delimited(Tokenizer tokenizer, ParseMethod parseMethod){
-        LinkedList<Token> tokens = new LinkedList<>();
+    default List<T> delimited(Tokenizer tokenizer, ParseMethod<T> parseMethod){
+        LinkedList<T> tokens = new LinkedList<>();
 
         tokenizer.skip(flags().start);
         while (!tokenizer.eof()){
@@ -21,7 +22,7 @@ public interface Delimiter {
             tokenizer.unsafeSkip(flags().separator);
         }
 
-        return tokens.toArray(new Token[0]);
+        return tokens;
     }
 
     class Flags{
@@ -34,7 +35,7 @@ public interface Delimiter {
         }
     }
 
-    interface ParseMethod{
-        Token parse();
+    interface ParseMethod<T>{
+        T parse();
     }
 }

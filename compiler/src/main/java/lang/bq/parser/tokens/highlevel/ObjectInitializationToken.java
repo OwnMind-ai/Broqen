@@ -6,7 +6,7 @@ import lang.bq.parser.tokens.TokenType;
 import java.util.Objects;
 
 public class ObjectInitializationToken implements Token {
-    public final String type;
+    public final String type;  // TODO: Maybe just use something that contains Primitive or String values
     public final String name;
     public final Token value;
 

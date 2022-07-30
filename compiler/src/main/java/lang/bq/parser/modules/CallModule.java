@@ -11,7 +11,7 @@ import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.syntax.DelimiterFlags;
 import lang.bq.syntax.Punctuations;
 
-public class CallModule implements ForkedModule, Delimiter {
+public class CallModule implements ForkedModule, Delimiter<Token> {
     private String name;
     @Override
     public boolean isNextForked(Token token, Context context) {
@@ -24,7 +24,7 @@ public class CallModule implements ForkedModule, Delimiter {
         assert name != null;
         return new CallToken(
                 name,
-                this.delimited(tokenizer, () -> accessor.parse(Context.EXPRESSION))
+                this.delimited(tokenizer, () -> accessor.parse(Context.EXPRESSION)).toArray(new Token[0])
         );
     }
 
