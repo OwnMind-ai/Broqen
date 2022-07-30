@@ -17,8 +17,7 @@ public class ExpressionModule implements ParserModule{
     @Override
     public boolean isNext(Token token, Context context) {
         return (context == Context.FUNCTION || context == Context.EXPRESSION)
-                && token.type() == TokenType.PUNCTUATION &&
-                ((PunctuationToken) token).value == Punctuations.PARENTHESES_START;
+                && token.is(TokenType.PUNCTUATION, Punctuations.PARENTHESES_START);
     }
 
     @Override

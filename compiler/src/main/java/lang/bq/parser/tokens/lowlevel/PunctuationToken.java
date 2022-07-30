@@ -21,6 +21,11 @@ public class PunctuationToken implements Token {
     }
 
     @Override
+    public boolean is(TokenType type, Object value) {
+        return this.type() == type && this.value == value;
+    }
+
+    @Override
     public String toString() {
         return "PunctuationToken{" +
                 "value=" + value.representation() +

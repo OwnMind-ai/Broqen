@@ -14,7 +14,7 @@ public class ScriptModule implements ParserModule, Delimiter<Token>{
     @Override
     public boolean isNext(Token token, Context context) {
         return (context == Context.GLOBAL || context == Context.NODE) &&
-                token.equals(new PunctuationToken(Punctuations.CURLY_START));
+                token.is(TokenType.PUNCTUATION, Punctuations.CURLY_START);
     }
 
     @Override

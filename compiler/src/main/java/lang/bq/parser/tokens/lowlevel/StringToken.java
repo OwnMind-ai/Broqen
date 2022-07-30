@@ -20,6 +20,11 @@ public class StringToken implements Token {
     }
 
     @Override
+    public boolean is(TokenType type, Object value) {
+        return type == this.type && this.value.equals(value);
+    }
+
+    @Override
     public String toString() {
         return "StringToken{" +
                 "type=" + type +

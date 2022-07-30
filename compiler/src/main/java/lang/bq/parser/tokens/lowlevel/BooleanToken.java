@@ -4,7 +4,6 @@ import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 
 public class BooleanToken implements Token {
-    private static final TokenType type = TokenType.BOOLEAN;
     public final boolean value;
 
     public BooleanToken(boolean value) {
@@ -13,7 +12,12 @@ public class BooleanToken implements Token {
 
     @Override
     public TokenType type() {
-        return type;
+        return TokenType.BOOLEAN;
+    }
+
+    @Override
+    public boolean is(TokenType type, Object value) {
+        return this.type() == type && value.equals(this.value);
     }
 
     @Override

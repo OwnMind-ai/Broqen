@@ -6,7 +6,6 @@ import lang.bq.parser.tokens.TokenType;
 import java.util.Objects;
 
 public class NumberToken implements Token {
-    private static final TokenType type = TokenType.NUMBER;
     public final Number value;
 
     public NumberToken(Number value) {
@@ -15,7 +14,14 @@ public class NumberToken implements Token {
 
     @Override
     public TokenType type() {
-        return type;
+        return TokenType.NUMBER;
+    }
+
+    @Override
+    public boolean is(TokenType type, Object value) {
+        return type == this.type() && value instanceof Number &&
+                (((Number) value).doubleValue() == this.value.doubleValue() &&
+                 ((Number) value).longValue() == this.value.longValue());
     }
 
     @Override

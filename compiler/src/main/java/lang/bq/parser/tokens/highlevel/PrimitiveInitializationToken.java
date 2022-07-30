@@ -7,19 +7,19 @@ import lang.bq.syntax.Primitives;
 import java.util.Objects;
 
 public class PrimitiveInitializationToken implements Token {
-    public final Primitives type;
+    public final Primitives variableType;
     public final String name;
     public final Token value;
 
     public PrimitiveInitializationToken(Primitives type, String name, Token value) {
-        this.type = type;
+        this.variableType = type;
         this.name = name;
         this.value = value;
     }
 
     @Override
     public String toString() {
-        return "INITIALIZATION(" + type + "," + value + ")";
+        return "INITIALIZATION(" + variableType + "," + value + ")";
     }
 
     @Override
@@ -32,11 +32,11 @@ public class PrimitiveInitializationToken implements Token {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrimitiveInitializationToken that = (PrimitiveInitializationToken) o;
-        return type == that.type && Objects.equals(value, that.value);
+        return variableType == that.variableType && Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, value);
+        return Objects.hash(variableType, value);
     }
 }

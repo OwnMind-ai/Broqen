@@ -1,5 +1,6 @@
 package lang.bq.parser.tokenizer;
 
+import com.sun.istack.internal.NotNull;
 import lang.bq.messages.ExceptionMessage;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
