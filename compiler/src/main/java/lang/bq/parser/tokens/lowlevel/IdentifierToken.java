@@ -5,16 +5,16 @@ import lang.bq.parser.tokens.TokenType;
 
 import java.util.Objects;
 
-public class StringToken implements Token {
+public class IdentifierToken implements Token {
     public final String value;
 
-    public StringToken(String value) {
+    public IdentifierToken(String value) {
         this.value = value;
     }
 
     @Override
     public TokenType type() {
-        return TokenType.STRING;
+        return TokenType.IDENTIFIER;
     }
 
     @Override
@@ -24,19 +24,19 @@ public class StringToken implements Token {
 
     @Override
     public String toString() {
-        return "StringToken(\"" + value + "\")";
+        return "IDENTIFIER(" + value + ')';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StringToken that = (StringToken) o;
-        return type() == that.type() && value.equals(that.value);
+        IdentifierToken that = (IdentifierToken) o;
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type(), value);
+        return Objects.hash(value);
     }
 }

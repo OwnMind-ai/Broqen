@@ -9,7 +9,6 @@ import lang.bq.parser.tokens.highlevel.ExpressionToken;
 import lang.bq.parser.tokens.lowlevel.EmptyToken;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.parser.tokens.lowlevel.OperatorToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
 
 public class SignModule implements ParserModule {
     @Override

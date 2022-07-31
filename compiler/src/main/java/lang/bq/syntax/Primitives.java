@@ -12,9 +12,9 @@ public enum Primitives {
 
     STRING("string");
 
-    public static Primitives of(String operator){
+    public static Primitives of(String value){
         for(Primitives primitive : Primitives.values())
-            if (primitive.representation().equals(operator)) return primitive;
+            if (primitive.representation().equals(value)) return primitive;
 
         return null;
     }

@@ -6,24 +6,25 @@ import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.BooleanToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
+import lang.bq.parser.tokens.lowlevel.KeywordToken;
+import lang.bq.syntax.Keywords;
 
 public class BooleanModule implements ParserModule{
     @Override
     public boolean isNext(Token token, Context context) {
         if(context != Context.EXPRESSION || token.type() != TokenType.KEYWORD) return false;
-        StringToken keyword = (StringToken) token;
+        Keywords keyword = ((KeywordToken) token).keyword;
 
-        return keyword.value.equals("true") || keyword.value.equals("false");
+        return keyword == Keywords.TRUE || keyword == Keywords.FALSE;
     }
 
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
-        StringToken keyword = (StringToken) tokenizer.next();
+        Keywords keyword = ((KeywordToken) tokenizer.next()).keyword;
 
-        switch (keyword.value){
-            case "true": return new BooleanToken(true);
-            case "false": return new BooleanToken(false);
+        switch (keyword){
+            case TRUE: return new BooleanToken(true);
+            case FALSE: return new BooleanToken(false);
             default: return null;
         }
     }

@@ -7,6 +7,7 @@ import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ArgumentToken;
 import lang.bq.parser.tokens.highlevel.FunctionToken;
 import lang.bq.parser.tokens.highlevel.ScriptToken;
+import lang.bq.parser.tokens.lowlevel.IdentifierToken;
 import lang.bq.parser.tokens.lowlevel.PrimitiveToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.syntax.Primitives;
@@ -31,7 +32,7 @@ class FunctionModuleTest {
                         "main",
                         new ArgumentToken[]{
                                 new ArgumentToken(new PrimitiveToken(Primitives.INT), "a"),
-                                new ArgumentToken(new StringToken(TokenType.IDENTIFIER, "Object"), "b")
+                                new ArgumentToken(new IdentifierToken("Object"), "b")
                         },
                         new ScriptToken(new Token[0])
                 ),

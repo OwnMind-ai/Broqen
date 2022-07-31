@@ -6,6 +6,7 @@ import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.CallToken;
+import lang.bq.parser.tokens.lowlevel.IdentifierToken;
 import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.syntax.DelimiterFlags;
 import lang.bq.syntax.Punctuations;
@@ -40,7 +41,7 @@ public class CallModule implements ForkedModule, Delimiter<Token> {
     @Override
     public void setPrevious(Token token) {
         assert token.type() == TokenType.IDENTIFIER;
-        this.name = ((StringToken) token).value;
+        this.name = ((IdentifierToken) token).value;
     }
 
     @Override

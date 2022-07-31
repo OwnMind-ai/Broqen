@@ -6,7 +6,6 @@ import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ScriptToken;
-import lang.bq.parser.tokens.lowlevel.PunctuationToken;
 import lang.bq.syntax.DelimiterFlags;
 import lang.bq.syntax.Punctuations;
 

@@ -1,10 +1,10 @@
 package lang.bq.parser.tokenizer;
 
-import com.sun.istack.internal.NotNull;
 import lang.bq.messages.ExceptionMessage;
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.*;
+import lang.bq.syntax.Keywords;
 import lang.bq.syntax.Operators;
 import lang.bq.syntax.Primitives;
 import lang.bq.syntax.Punctuations;
@@ -29,12 +29,12 @@ public class Tokenizer{
     }
 
     private static boolean isDigit(char ch) { return Tokenizer.digits.indexOf(ch) > -1; }
-    private static boolean isNameStart(char ch) { return Tokenizer.letters.indexOf(ch) > -1; }
+    private static boolean isIdentefication(char ch) { return Tokenizer.letters.indexOf(ch) > -1; }
     private static boolean isOperator(char ch) { return Operators.chars.indexOf(ch) > -1; }
     private static boolean isWhitespace(char ch) { return Tokenizer.whitespaces.indexOf(ch) > -1; }
     private static boolean isString(char ch) { return Tokenizer.stringOperators.indexOf(ch) > -1; }
     private static boolean isPunctuation(char ch) { return Punctuations.chars.indexOf(ch) > -1; }
-    private static boolean isName(char ch) { return Tokenizer.isNameStart(ch) || (Tokenizer.digits + "_").indexOf(ch) > -1; }
+    private static boolean isIdentification(char ch) { return Tokenizer.isIdentefication(ch) || (Tokenizer.digits + "_").indexOf(ch) > -1; }
 
     private String readWhile(ReadingCondition predicate) {
         StringBuilder text = new StringBuilder();
@@ -97,16 +97,17 @@ public class Tokenizer{
     }
 
     private Token readIdentification() {
-        String name = this.readWhile(Tokenizer::isName);
+        String name = this.readWhile(Tokenizer::isIdentification);
 
-        if(Tokenizer.keywords.contains(name))
-            return new StringToken(TokenType.KEYWORD, name);
+        Keywords keyword = Keywords.of(name);
+        if(keyword != null)
+            return new KeywordToken(keyword);
         else {
             Primitives primitive = Primitives.of(name);
             if(primitive != null)
                 return new PrimitiveToken(primitive);
             else
-                return new StringToken(TokenType.IDENTIFIER, name);
+                return new IdentifierToken(name);
         }
     }
 
@@ -132,7 +133,7 @@ public class Tokenizer{
 
             // if end of string, returns it
             if (ch == startChar)
-                return new StringToken(TokenType.STRING, text.toString());
+                return new StringToken(text.toString());
 
             // Example: (\") in code will be (") in string
             if (ch == '\\')
@@ -179,7 +180,7 @@ public class Tokenizer{
         if (Tokenizer.isDigit(ch))
             return this.readNumber();
 
-        if (Tokenizer.isNameStart(ch))
+        if (Tokenizer.isIdentefication(ch))
             return this.readIdentification();
 
         this.throwException("Invalid Syntax");
