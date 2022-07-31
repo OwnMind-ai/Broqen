@@ -7,13 +7,13 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class FunctionToken implements Token{
-    public final Token returnType;
+    public final TypeToken returnType;
     public final String name;
     public final ArgumentToken[] structure;
 
     public final ScriptToken body;
 
-    public FunctionToken(Token returnType, String name, ArgumentToken[] structure, ScriptToken body) {
+    public FunctionToken(TypeToken returnType, String name, ArgumentToken[] structure, ScriptToken body) {
         this.returnType = returnType;
         this.name = name;
         this.structure = structure;

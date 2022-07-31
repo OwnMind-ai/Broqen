@@ -2,8 +2,8 @@ package lang.bq.parser.modules;
 
 import lang.bq.parser.tokenizer.CharStream;
 import lang.bq.parser.tokenizer.Tokenizer;
-import lang.bq.parser.tokens.highlevel.ObjectInitializationToken;
-import lang.bq.parser.tokens.highlevel.PrimitiveInitializationToken;
+import lang.bq.parser.tokens.highlevel.InitializationToken;
+import lang.bq.parser.tokens.highlevel.TypeToken;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.syntax.Primitives;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class InitializationModuleTest {
 
         InitializationModule module = new InitializationModule();
         
-        assertEquals(new PrimitiveInitializationToken(Primitives.INT, "name", new NumberToken(12)),
+        assertEquals(new InitializationToken(new TypeToken(Primitives.INT), "name", new NumberToken(12)),
                 module.parse(tokenizer, c -> tokenizer.next()));
     }
 
@@ -32,7 +32,7 @@ class InitializationModuleTest {
         tokenizer.next();
         module.setPrevious(tokenizer.next());
 
-        assertEquals(new ObjectInitializationToken("Object", "name", null),
+        assertEquals(new InitializationToken(new TypeToken("Object"), "name", null),
                 module.parse(tokenizer, c -> tokenizer.next()));
     }
 }

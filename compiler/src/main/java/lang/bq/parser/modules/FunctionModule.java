@@ -8,8 +8,8 @@ import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ArgumentToken;
 import lang.bq.parser.tokens.highlevel.FunctionToken;
 import lang.bq.parser.tokens.highlevel.ScriptToken;
+import lang.bq.parser.tokens.highlevel.TypeToken;
 import lang.bq.parser.tokens.lowlevel.IdentifierToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.syntax.DelimiterFlags;
 
 //TODO: Make it parametrized
@@ -24,6 +24,7 @@ public class FunctionModule implements ParserModule, Delimiter<ArgumentToken>  {
 
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
+        assert tokenizer.peek().anyType(TokenType.IDENTIFIER, TokenType.PRIMITIVE);
         Token returnType = tokenizer.next();
 
         assert tokenizer.peek().type() == TokenType.IDENTIFIER;
@@ -35,18 +36,17 @@ public class FunctionModule implements ParserModule, Delimiter<ArgumentToken>  {
 
         ScriptToken script = (ScriptToken) scriptModule.parse(tokenizer, accessor);
 
-        return new FunctionToken(returnType, name, arguments, script);
+        return new FunctionToken(TypeToken.of(returnType), name, arguments, script);
     }
 
     private ArgumentToken parseArgument(Tokenizer tokenizer){
-        // TODO: Change to TypeToken
         assert tokenizer.peek().anyType(TokenType.IDENTIFIER, TokenType.PRIMITIVE);
         Token type = tokenizer.next();
 
         assert tokenizer.peek().type() == TokenType.IDENTIFIER;
         String name = ((IdentifierToken) tokenizer.next()).value;
 
-        return new ArgumentToken(type, name);
+        return new ArgumentToken(TypeToken.of(type), name);
     }
 
     @Override

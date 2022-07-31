@@ -11,6 +11,7 @@ public enum TokenType {
     STRING,
     BOOLEAN,
     PRIMITIVE,
+    TYPE,
 
     FUNCTION,
     NODE,

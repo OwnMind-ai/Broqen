@@ -2,16 +2,15 @@ package lang.bq.parser.tokens.highlevel;
 
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
-import lang.bq.syntax.Primitives;
 
 import java.util.Objects;
 
-public class PrimitiveInitializationToken implements Token {
-    public final Primitives variableType;
+public class InitializationToken implements Token {
+    public final TypeToken variableType;
     public final String name;
     public final Token value;
 
-    public PrimitiveInitializationToken(Primitives type, String name, Token value) {
+    public InitializationToken(TypeToken type, String name, Token value) {
         this.variableType = type;
         this.name = name;
         this.value = value;
@@ -24,15 +23,15 @@ public class PrimitiveInitializationToken implements Token {
 
     @Override
     public TokenType type() {
-        return TokenType.PRIMITIVE_INITIALIZATION;
+        return TokenType.OBJECT_INITIALIZATION;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PrimitiveInitializationToken that = (PrimitiveInitializationToken) o;
-        return variableType == that.variableType && Objects.equals(value, that.value);
+        InitializationToken that = (InitializationToken) o;
+        return Objects.equals(variableType, that.variableType) && Objects.equals(value, that.value);
     }
 
     @Override

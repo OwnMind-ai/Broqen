@@ -6,10 +6,10 @@ import lang.bq.parser.tokens.TokenType;
 import java.util.Objects;
 
 public class ArgumentToken implements Token {
-    public final Token type;
+    public final TypeToken type;
     public final String name;
 
-    public ArgumentToken(Token type, String name) {
+    public ArgumentToken(TypeToken type, String name) {
         this.type = type;
         this.name = name;
     }
