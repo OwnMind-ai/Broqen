@@ -3,14 +3,11 @@ package lang.bq.parser.modules;
 import lang.bq.parser.tokenizer.CharStream;
 import lang.bq.parser.tokenizer.Tokenizer;
 import lang.bq.parser.tokens.Token;
-import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ArgumentToken;
 import lang.bq.parser.tokens.highlevel.FunctionToken;
 import lang.bq.parser.tokens.highlevel.ScriptToken;
 import lang.bq.parser.tokens.highlevel.TypeToken;
-import lang.bq.parser.tokens.lowlevel.IdentifierToken;
-import lang.bq.parser.tokens.lowlevel.PrimitiveToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
+import lang.bq.syntax.Keywords;
 import lang.bq.syntax.Primitives;
 import org.junit.jupiter.api.Test;
 
@@ -26,10 +23,11 @@ class FunctionModuleTest {
         tokenizer.next();
 
         FunctionModule module = new FunctionModule();
+        module.setParameters(new Keywords[0]);
 
         assertEquals(
                 new FunctionToken(
-                        new TypeToken(Primitives.VOID),
+                        new Keywords[0], new TypeToken(Primitives.VOID),
                         "main",
                         new ArgumentToken[]{
                                 new ArgumentToken(new TypeToken(Primitives.INT), "a"),

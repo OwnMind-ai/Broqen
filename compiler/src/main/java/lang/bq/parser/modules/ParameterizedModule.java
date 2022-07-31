@@ -1,7 +1,7 @@
 package lang.bq.parser.modules;
 
-import lang.bq.parser.tokens.Token;
+import lang.bq.syntax.Keywords;
 
 public interface ParameterizedModule extends ParserModule{
-    void setParameters(Token[] parameters);
+    void setParameters(Keywords[] parameters);
 }

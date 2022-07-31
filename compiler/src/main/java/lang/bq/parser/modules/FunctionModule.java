@@ -11,10 +11,12 @@ import lang.bq.parser.tokens.highlevel.ScriptToken;
 import lang.bq.parser.tokens.highlevel.TypeToken;
 import lang.bq.parser.tokens.lowlevel.IdentifierToken;
 import lang.bq.syntax.DelimiterFlags;
+import lang.bq.syntax.Keywords;
 
-//TODO: Make it parametrized
-public class FunctionModule implements ParserModule, Delimiter<ArgumentToken>  {
+public class FunctionModule implements ParameterizedModule, Delimiter<ArgumentToken>  {
     private static final ScriptModule scriptModule = new ScriptModule();
+
+    private Keywords[] parameters;
 
     @Override
     public boolean isNext(Token token, Context context) {
@@ -36,7 +38,8 @@ public class FunctionModule implements ParserModule, Delimiter<ArgumentToken>  {
 
         ScriptToken script = (ScriptToken) scriptModule.parse(tokenizer, accessor);
 
-        return new FunctionToken(TypeToken.of(returnType), name, arguments, script);
+        assert this.parameters != null;
+        return new FunctionToken(this.parameters, TypeToken.of(returnType), name, arguments, script);
     }
 
     private ArgumentToken parseArgument(Tokenizer tokenizer){
@@ -57,5 +60,10 @@ public class FunctionModule implements ParserModule, Delimiter<ArgumentToken>  {
     @Override
     public Flags flags() {
         return DelimiterFlags.FUNCTION_ARGS.flags();
+    }
+
+    @Override
+    public void setParameters(Keywords[] parameters) {
+        this.parameters = parameters;
     }
 }
