@@ -21,7 +21,8 @@ public enum Keywords {
     NEW("new"),
     NODE("node"),
     SENDER("sender"),
-    FEEDBACK("feedback");
+    FEEDBACK("feedback"),
+    ELSE("else");
 
     public static Keywords of(String value){
         for(Keywords keyword : Keywords.values())

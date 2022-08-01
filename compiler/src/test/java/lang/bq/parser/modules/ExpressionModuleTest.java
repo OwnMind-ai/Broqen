@@ -8,6 +8,7 @@ import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ExpressionToken;
 import lang.bq.parser.tokens.lowlevel.NumberToken;
 import lang.bq.parser.tokens.lowlevel.PunctuationToken;
+import lang.bq.syntax.Keywords;
 import lang.bq.syntax.Punctuations;
 import org.junit.jupiter.api.Test;
 
