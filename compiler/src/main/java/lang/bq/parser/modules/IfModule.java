@@ -8,17 +8,12 @@ import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.ExpressionToken;
 import lang.bq.parser.tokens.highlevel.IfToken;
 import lang.bq.parser.tokens.highlevel.ScriptToken;
-import lang.bq.parser.tokens.lowlevel.BooleanToken;
 import lang.bq.parser.tokens.lowlevel.KeywordToken;
 import lang.bq.parser.tokens.lowlevel.PunctuationToken;
 import lang.bq.syntax.Keywords;
-import lang.bq.syntax.Operators;
 import lang.bq.syntax.Punctuations;
 
-public class IfModule implements ParserModule{
-    private static final ExpressionModule expressionModule = new ExpressionModule();
-    private static final ScriptModule scriptModule = new ScriptModule();
-
+public class IfModule implements ParserModule, ScriptedModule{
     @Override
     public boolean isNext(Token token, Context context) {
         return context == Context.FUNCTION && token.is(TokenType.KEYWORD, Keywords.IF);
@@ -29,11 +24,7 @@ public class IfModule implements ParserModule{
         tokenizer.skip(new KeywordToken(Keywords.IF));
         tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_START));
 
-        Token rawCondition = expressionModule.parse(tokenizer, accessor);
-        ExpressionToken condition = rawCondition.type() == TokenType.EXPRESSION ?
-                (ExpressionToken) rawCondition :
-                new ExpressionToken(Operators.EQUAL, new BooleanToken(true), rawCondition);
-
+        ExpressionToken condition = parseCondition(tokenizer, accessor);
         ScriptToken ifScript = parseBody(tokenizer, accessor);
 
         if(tokenizer.peek().is(TokenType.KEYWORD, Keywords.ELSE)){
@@ -43,12 +34,6 @@ public class IfModule implements ParserModule{
         }
 
         return new IfToken(condition, ifScript, null);
-    }
-
-    private ScriptToken parseBody(Tokenizer tokenizer, ModuleAccessor accessor){
-        return tokenizer.peek().is(TokenType.PUNCTUATION, Punctuations.CURLY_START) ?
-                (ScriptToken) scriptModule.parse(tokenizer, accessor) :
-                new ScriptToken(new Token[]{accessor.parse(Context.FUNCTION)});
     }
 
     @Override

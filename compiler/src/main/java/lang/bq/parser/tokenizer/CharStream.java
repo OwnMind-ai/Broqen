@@ -10,7 +10,7 @@ public class CharStream{
         this.text = text;
     }
 
-    public char next() {
+    public char skip() {
         char ch = this.text.charAt(this.position++);
         if (ch == '\n') {
             this.line++;
@@ -22,11 +22,9 @@ public class CharStream{
         return ch;
     }
 
-    public String next(int length) {
-        String data = peek(length);
-
-        for (int i = 0; i < data.length(); i++) {
-            if (data.charAt(i) == '\n') {
+    public void skip(int length) {
+        for (int i = 0; i < length; i++) {
+            if (text.charAt(this.position + i) == '\n') {
                 this.column = 0;
                 this.line++;
             } else {
@@ -35,8 +33,6 @@ public class CharStream{
 
             this.position++;
         }
-
-        return data;
     }
 
     public char peek() {

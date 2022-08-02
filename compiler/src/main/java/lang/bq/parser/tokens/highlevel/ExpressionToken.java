@@ -2,7 +2,6 @@ package lang.bq.parser.tokens.highlevel;
 
 import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
-import lang.bq.parser.tokens.lowlevel.OperatorToken;
 import lang.bq.syntax.Operators;
 
 import java.util.Objects;

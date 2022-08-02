@@ -8,9 +8,7 @@ import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.InitializationToken;
 import lang.bq.parser.tokens.highlevel.TypeToken;
 import lang.bq.parser.tokens.lowlevel.IdentifierToken;
-import lang.bq.parser.tokens.lowlevel.PrimitiveToken;
 import lang.bq.syntax.Operators;
-import lang.bq.syntax.Primitives;
 
 public class InitializationModule implements ForkedModule{
     private Token type;

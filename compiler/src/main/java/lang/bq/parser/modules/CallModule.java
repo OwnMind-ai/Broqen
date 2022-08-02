@@ -7,7 +7,6 @@ import lang.bq.parser.tokens.Token;
 import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.highlevel.CallToken;
 import lang.bq.parser.tokens.lowlevel.IdentifierToken;
-import lang.bq.parser.tokens.lowlevel.StringToken;
 import lang.bq.syntax.DelimiterFlags;
 import lang.bq.syntax.Punctuations;
 

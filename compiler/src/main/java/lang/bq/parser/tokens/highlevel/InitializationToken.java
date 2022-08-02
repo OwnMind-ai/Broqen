@@ -23,7 +23,7 @@ public class InitializationToken implements Token {
 
     @Override
     public TokenType type() {
-        return TokenType.OBJECT_INITIALIZATION;
+        return TokenType.INITIALIZATION;
     }
 
     @Override

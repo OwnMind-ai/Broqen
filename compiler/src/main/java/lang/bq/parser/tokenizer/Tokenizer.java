@@ -2,25 +2,17 @@ package lang.bq.parser.tokenizer;
 
 import lang.bq.messages.ExceptionMessage;
 import lang.bq.parser.tokens.Token;
-import lang.bq.parser.tokens.TokenType;
 import lang.bq.parser.tokens.lowlevel.*;
 import lang.bq.syntax.Keywords;
 import lang.bq.syntax.Operators;
 import lang.bq.syntax.Primitives;
 import lang.bq.syntax.Punctuations;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Tokenizer{
     private final static String whitespaces = " \n\t\r";
     private final static String digits = "0123456789";
     private final static String stringOperators = "\"'";
     private final static String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    private final static List<String> keywords = Arrays.asList(
-            "true", "false", "new", "node", "send", "feedback", "public", "private"
-    );
     private final CharStream stream;
     private Token current;
 
@@ -29,18 +21,18 @@ public class Tokenizer{
     }
 
     private static boolean isDigit(char ch) { return Tokenizer.digits.indexOf(ch) > -1; }
-    private static boolean isIdentefication(char ch) { return Tokenizer.letters.indexOf(ch) > -1; }
+    private static boolean isIdentificationStart(char ch) { return Tokenizer.letters.indexOf(ch) > -1; }
     private static boolean isOperator(char ch) { return Operators.chars.indexOf(ch) > -1; }
     private static boolean isWhitespace(char ch) { return Tokenizer.whitespaces.indexOf(ch) > -1; }
     private static boolean isString(char ch) { return Tokenizer.stringOperators.indexOf(ch) > -1; }
     private static boolean isPunctuation(char ch) { return Punctuations.chars.indexOf(ch) > -1; }
-    private static boolean isIdentification(char ch) { return Tokenizer.isIdentefication(ch) || (Tokenizer.digits + "_").indexOf(ch) > -1; }
+    private static boolean isIdentification(char ch) { return Tokenizer.isIdentificationStart(ch) || (Tokenizer.digits + "_").indexOf(ch) > -1; }
 
     private String readWhile(ReadingCondition predicate) {
         StringBuilder text = new StringBuilder();
 
         while (!this.stream.eof() && predicate.check(this.stream.peek())) {
-            text.append(this.stream.next());
+            text.append(this.stream.skip());
         }
 
         return text.toString();
@@ -48,26 +40,26 @@ public class Tokenizer{
 
     private void skipWhitespaces(){
         while(!this.stream.eof() && isWhitespace(this.stream.peek())){
-            this.stream.next();
+            this.stream.skip();
         }
     }
 
     private boolean skipComments(){
         if(!this.stream.eof() && this.stream.peek() == '/'){
             if (this.stream.isNext("//")) {   // skip single-line comment
-                while (!this.stream.eof() && this.stream.next() != '\n');
+                while (!this.stream.eof() && this.stream.skip() != '\n');
 
-                if(!this.stream.eof()) this.stream.next(); // skip '\n'
+                if(!this.stream.eof()) this.stream.skip(); // skip '\n'
                 return true;
             } else if(this.stream.isNext("/*")) {   /* skip multi-line comment */
                 while (!this.stream.eof()){
                     if(this.stream.isNext("*/"))
                         break;
-                    this.stream.next();
+                    this.stream.skip();
                 }
 
-                this.stream.next();  // skip '*'
-                this.stream.next();  // skip '/'
+                this.stream.skip();  // skip '*'
+                this.stream.skip();  // skip '/'
                 return true;
             }
         }
@@ -87,7 +79,7 @@ public class Tokenizer{
 
             Operators result = Operators.of(operator);
             if (result != null) {
-                this.stream.next(i);
+                this.stream.skip(i);
                 return new OperatorToken(result);
             }
         }
@@ -125,11 +117,11 @@ public class Tokenizer{
 
     private Token readString() {
         StringBuilder text = new StringBuilder();
-        char startChar = this.stream.next();
+        char startChar = this.stream.skip();
 
         // read all chars to next end_char (" or ') and add to text
         while (!(this.stream.eof() || this.stream.peek() == '\n')) {
-            char ch = this.stream.next();
+            char ch = this.stream.skip();
 
             // if end of string, returns it
             if (ch == startChar)
@@ -147,7 +139,7 @@ public class Tokenizer{
     }
 
     private char readEscapeChar() {
-        char escapedChar = this.stream.next();
+        char escapedChar = this.stream.skip();
 
         if (escapedChar == 't')
             return '\t';
@@ -169,7 +161,7 @@ public class Tokenizer{
         char ch = this.stream.peek();
 
         if (Tokenizer.isPunctuation(ch))
-            return new PunctuationToken(Punctuations.of(String.valueOf(this.stream.next())));
+            return new PunctuationToken(Punctuations.of(String.valueOf(this.stream.skip())));
 
         if (Tokenizer.isOperator(ch))
             return readOperator();
@@ -180,7 +172,7 @@ public class Tokenizer{
         if (Tokenizer.isDigit(ch))
             return this.readNumber();
 
-        if (Tokenizer.isIdentefication(ch))
+        if (Tokenizer.isIdentificationStart(ch))
             return this.readIdentification();
 
         this.throwException("Invalid Syntax");
@@ -216,6 +208,7 @@ public class Tokenizer{
         return false;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean eof() {
         return stream.eof();
     }

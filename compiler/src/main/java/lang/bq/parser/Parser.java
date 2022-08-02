@@ -10,7 +10,6 @@ public class Parser {
             /* ...modules... */
     };
     private final Tokenizer tokenizer;
-    private Context context = Context.GLOBAL;
 
     public Parser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
@@ -20,14 +19,9 @@ public class Parser {
     private Token parseToken(Context context){
         Token token = this.tokenizer.next();
 
-        for (ParserModule module : modules) {
-            if (module.isNext(token, context)) {
-                Token result = module.parse(this.tokenizer, this::parseToken);
-                if(module.nextContext() != null) this.context = module.nextContext();
-
-                return result;
-            }
-        }
+        for (ParserModule module : modules)
+            if (module.isNext(token, context))
+                return module.parse(this.tokenizer, this::parseToken);
 
         if(token.type() == TokenType.IDENTIFIER ||
            token.type() == TokenType.NUMBER     ||
