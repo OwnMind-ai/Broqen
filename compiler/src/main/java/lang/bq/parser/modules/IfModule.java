@@ -33,7 +33,6 @@ public class IfModule implements ParserModule{
         ExpressionToken condition = rawCondition.type() == TokenType.EXPRESSION ?
                 (ExpressionToken) rawCondition :
                 new ExpressionToken(Operators.EQUAL, new BooleanToken(true), rawCondition);
-        tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_END));
 
         ScriptToken ifScript = parseBody(tokenizer, accessor);
 
