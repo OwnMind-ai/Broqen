@@ -20,7 +20,6 @@ public class WhileModule implements ParserModule, ScriptedModule{
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
         tokenizer.skip(new KeywordToken(Keywords.WHILE));
-        tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_START));
 
         return new WhileToken(
                 this.parseCondition(tokenizer, accessor),

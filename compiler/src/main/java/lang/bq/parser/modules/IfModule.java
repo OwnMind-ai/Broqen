@@ -22,7 +22,6 @@ public class IfModule implements ParserModule, ScriptedModule{
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
         tokenizer.skip(new KeywordToken(Keywords.IF));
-        tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_START));
 
         ExpressionToken condition = parseCondition(tokenizer, accessor);
         ScriptToken ifScript = parseBody(tokenizer, accessor);

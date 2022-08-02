@@ -25,6 +25,7 @@ public class ExpressionModule implements ParserModule{
         this.accessor = accessor;
         this.tokenizer = tokenizer;
 
+        tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_START));
         Token result = this.buildTree(accessor.parse(Context.EXPRESSION), Integer.MAX_VALUE);
         tokenizer.skip(new PunctuationToken(Punctuations.PARENTHESES_END));
 

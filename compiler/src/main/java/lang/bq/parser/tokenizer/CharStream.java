@@ -10,7 +10,7 @@ public class CharStream{
         this.text = text;
     }
 
-    public char skip() {
+    public char next() {
         char ch = this.text.charAt(this.position++);
         if (ch == '\n') {
             this.line++;

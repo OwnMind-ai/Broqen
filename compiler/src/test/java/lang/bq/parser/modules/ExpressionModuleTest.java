@@ -36,20 +36,19 @@ class ExpressionModuleTest {
             )
     );
 
-    private final Tokenizer tokenizer = new Tokenizer(new CharStream("0 + (1 + (2 - 3)) * (4 - 5 / 6 - 7)"));
+    private final Tokenizer tokenizer = new Tokenizer(new CharStream("(0 + (1 + (2 - 3)) * (4 - 5 / 6 - 7))"));
     private final ExpressionModule module = new ExpressionModule();
 
     @Test
     void parse() {
         assertTrue(module.isNext(new PunctuationToken(Punctuations.PARENTHESES_START), Context.FUNCTION));
         tokenizer.next();
+
         assertEquals(answer, module.parse(tokenizer, this::parseToken));
     }
 
     private Token parseToken(Context context){
-        if(tokenizer.peek() != null && tokenizer.peek().type() == TokenType.PUNCTUATION &&
-                ((PunctuationToken) tokenizer.peek()).value == Punctuations.PARENTHESES_START){
-            tokenizer.next();
+        if(module.isNext(tokenizer.peek(), context)){
             return module.parse(tokenizer, this::parseToken);
         }
 

@@ -32,7 +32,7 @@ public class Tokenizer{
         StringBuilder text = new StringBuilder();
 
         while (!this.stream.eof() && predicate.check(this.stream.peek())) {
-            text.append(this.stream.skip());
+            text.append(this.stream.next());
         }
 
         return text.toString();
@@ -40,26 +40,26 @@ public class Tokenizer{
 
     private void skipWhitespaces(){
         while(!this.stream.eof() && isWhitespace(this.stream.peek())){
-            this.stream.skip();
+            this.stream.next();
         }
     }
 
     private boolean skipComments(){
         if(!this.stream.eof() && this.stream.peek() == '/'){
             if (this.stream.isNext("//")) {   // skip single-line comment
-                while (!this.stream.eof() && this.stream.skip() != '\n');
+                while (!this.stream.eof() && this.stream.next() != '\n');
 
-                if(!this.stream.eof()) this.stream.skip(); // skip '\n'
+                if(!this.stream.eof()) this.stream.next(); // skip '\n'
                 return true;
             } else if(this.stream.isNext("/*")) {   /* skip multi-line comment */
                 while (!this.stream.eof()){
                     if(this.stream.isNext("*/"))
                         break;
-                    this.stream.skip();
+                    this.stream.next();
                 }
 
-                this.stream.skip();  // skip '*'
-                this.stream.skip();  // skip '/'
+                this.stream.next();  // skip '*'
+                this.stream.next();  // skip '/'
                 return true;
             }
         }
@@ -117,11 +117,11 @@ public class Tokenizer{
 
     private Token readString() {
         StringBuilder text = new StringBuilder();
-        char startChar = this.stream.skip();
+        char startChar = this.stream.next();
 
         // read all chars to next end_char (" or ') and add to text
         while (!(this.stream.eof() || this.stream.peek() == '\n')) {
-            char ch = this.stream.skip();
+            char ch = this.stream.next();
 
             // if end of string, returns it
             if (ch == startChar)
@@ -139,7 +139,7 @@ public class Tokenizer{
     }
 
     private char readEscapeChar() {
-        char escapedChar = this.stream.skip();
+        char escapedChar = this.stream.next();
 
         if (escapedChar == 't')
             return '\t';
@@ -156,12 +156,12 @@ public class Tokenizer{
     }
 
     private Token findToken(){
-        if (this.stream.eof()) return null;
+        if (this.stream.eof()) return new EmptyToken();
 
         char ch = this.stream.peek();
 
         if (Tokenizer.isPunctuation(ch))
-            return new PunctuationToken(Punctuations.of(String.valueOf(this.stream.skip())));
+            return new PunctuationToken(Punctuations.of(String.valueOf(this.stream.next())));
 
         if (Tokenizer.isOperator(ch))
             return readOperator();
@@ -183,10 +183,6 @@ public class Tokenizer{
         this.skip();
         Token previous = this.current;
         this.current = findToken();
-
-        // Dangerous code, may cause infinity loops while waiting null output from Tokenizer::next
-        // TODO: find another way to fix problem with taking next on eof (something with Tokenizer::findToken:1)
-        if(current == null) this.current = previous;
 
         return previous;
     }
