@@ -10,6 +10,8 @@ import lang.bq.syntax.DelimiterFlags;
 import lang.bq.syntax.Punctuations;
 
 public class ScriptModule implements ParserModule, Delimiter<Token>{
+    private static final ExpressionModule expressionModule = new ExpressionModule();
+
     @Override
     public boolean isNext(Token token, Context context) {
         return (context == Context.GLOBAL || context == Context.NODE) &&
@@ -18,14 +20,17 @@ public class ScriptModule implements ParserModule, Delimiter<Token>{
 
     @Override
     public Token parse(Tokenizer tokenizer, ModuleAccessor accessor) {
-        Token[] instructions = this.delimited(tokenizer, () -> accessor.parse(Context.FUNCTION)).toArray(new Token[0]);
+        Token[] instructions = this.delimited(
+                tokenizer,
+                () -> expressionModule.parseInstruction(tokenizer, accessor)
+        ).toArray(new Token[0]);
 
         return new ScriptToken(instructions);
     }
 
     @Override
     public Context nextContext() {
-        return Context.FUNCTION;
+        return null;
     }
 
     @Override

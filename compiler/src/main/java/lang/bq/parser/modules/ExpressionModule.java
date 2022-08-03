@@ -32,6 +32,13 @@ public class ExpressionModule implements ParserModule{
         return result;
     }
 
+    public Token parseInstruction(Tokenizer tokenizer, ModuleAccessor accessor){
+        this.accessor = accessor;
+        this.tokenizer = tokenizer;
+
+        return this.buildTree(accessor.parse(Context.FUNCTION), Integer.MAX_VALUE);
+    }
+
     private Token buildTree(Token previous, int priority) {
         Token token = tokenizer.peek();
         if (token != null && token.type() == TokenType.OPERATOR) {
