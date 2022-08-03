@@ -40,6 +40,8 @@ public class InitializationModule implements ForkedModule{
             initialValue = accessor.parse(Context.EXPRESSION);
         }
 
+        this.type = null;
+
         return new InitializationToken(TypeToken.of(this.type), name, initialValue);
     }
 
